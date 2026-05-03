@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 
 struct Provider: TimelineProvider {
-    private func fetchNextEvent() -> Event? {
+    private func fetchNextEvent() -> DTEvent? {
         let groupID = "group.com.killianmathias.daysto"
 
         guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) else {
@@ -20,13 +20,13 @@ struct Provider: TimelineProvider {
         let fileURL = groupURL.appendingPathComponent("Events.sqlite")
 
         guard let container = try? ModelContainer(
-            for: Event.self,
+            for: DTEvent.self,
             configurations: ModelConfiguration(url: fileURL)
         ) else { return nil }
 
         let backgroundContext = ModelContext(container)
 
-        var descriptor = FetchDescriptor<Event>(sortBy: [SortDescriptor(\.date)])
+        var descriptor = FetchDescriptor<DTEvent>(sortBy: [SortDescriptor(\.date)])
         descriptor.fetchLimit = 1
 
         let events = try? backgroundContext.fetch(descriptor)
@@ -34,17 +34,21 @@ struct Provider: TimelineProvider {
     }
 
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), event: nil)
+        SimpleEntry(date: Date(), event: nil, isPremium: false)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), event: nil)
+        let entry = SimpleEntry(date: Date(), event: nil, isPremium: false)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
         let nextEvent = fetchNextEvent()
-        let entry = SimpleEntry(date: Date(), event: nextEvent)
+
+        let sharedDefaults = UserDefaults(suiteName: "group.com.killianmathias.daysto")
+        let isPremium = sharedDefaults?.bool(forKey: "isPremium") ?? false
+
+        let entry = SimpleEntry(date: Date(), event: nextEvent, isPremium: isPremium)
 
         let midnight = Calendar.current.startOfDay(for: Date()).addingTimeInterval(86400)
         let timeline = Timeline(entries: [entry], policy: .after(midnight))
@@ -55,7 +59,8 @@ struct Provider: TimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let event: Event?
+    let event: DTEvent?
+    let isPremium: Bool
 }
 
 struct DaysToWidgetEntryView: View {
@@ -65,7 +70,7 @@ struct DaysToWidgetEntryView: View {
         VStack(alignment: .leading, spacing: 8) {
             if let event = entry.event {
                 HStack {
-                    Image(systemName: event.icon)
+                    event.icon.swiftUIImage
                         .foregroundStyle(.blue)
                     Text(event.title)
                         .font(.headline)

@@ -9,16 +9,18 @@ import Foundation
 import SwiftData
 
 @Model
-final class Event {
+final class DTEvent {
     var title: String
     var date: Date
-    var icon: String
+    var icon: DTIcon
+    var color: DTColor
     var creationDate: Date
 
-    init(title: String, date: Date, icon: String = "calendar") {
+    init(title: String, date: Date, icon: DTIcon = .calendar, color: DTColor = .blue) {
         self.title = title
         self.date = date
         self.icon = icon
+        self.color = color
         self.creationDate = Date()
     }
 
@@ -30,3 +32,4 @@ final class Event {
         return components.day ?? 0
     }
 }
+

@@ -9,8 +9,12 @@ import SwiftUI
 import WidgetKit
 
 struct ContentView: View {
-    @Query(sort: \Event.date) private var events: [Event]
+    @Query(sort: \DTEvent.date) private var events: [DTEvent]
+
     @Environment(\.modelContext) private var modelContext
+    @Environment(StoreManager.self) private var storeManager
+
+    @State private var showingPaywall = false
     @State private var showingAddEvent = false
 
     var body: some View {
@@ -21,7 +25,7 @@ struct ContentView: View {
                 } else {
                     ForEach(events) { event in
                         HStack(spacing: 16) {
-                            Image(systemName: event.icon)
+                            event.icon.swiftUIImage
                                 .font(.title)
                                 .foregroundStyle(.blue)
                                 .frame(width: 40)
@@ -36,7 +40,6 @@ struct ContentView: View {
 
                             Spacer()
 
-                            // Le compteur de jours
                             VStack {
                                 Text("\(event.daysRemaining)")
                                     .font(.title2.bold())
@@ -53,13 +56,22 @@ struct ContentView: View {
             .navigationTitle(String(localized: "Mes Échéances"))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button(action: { showingAddEvent = true }) {
-                        Label(String(localized: "Ajouter"), systemImage: "plus")
+                    Button(action: {
+                        if events.count >= 1, !storeManager.isPremium {
+                            showingPaywall = true
+                        } else {
+                            showingAddEvent = true
+                        }
+                    }) {
+                        Label("Ajouter", systemImage: "plus")
                     }
                 }
             }
             .sheet(isPresented: $showingAddEvent) {
                 AddEventView()
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
             }
         }
     }
@@ -82,5 +94,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: DTEvent.self, inMemory: true)
 }

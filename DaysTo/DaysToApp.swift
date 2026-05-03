@@ -9,8 +9,10 @@ import SwiftUI
 
 @main
 struct DaysToApp: App {
+    @State private var storeManager = StoreManager()
+
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([Event.self])
+        let schema = Schema([DTEvent.self])
 
         guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.killianmathias.daysto") else {
             fatalError("App Group not found. Verify Signing & Capabilities.")
@@ -29,6 +31,7 @@ struct DaysToApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(storeManager)
         }
         .modelContainer(sharedModelContainer)
     }

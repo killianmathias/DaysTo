@@ -14,6 +14,8 @@
 		5F9C45E32FA2A0FF0020D867 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9C45E12FA2A0FF0020D867 /* Event.swift */; };
 		5F9C46012FA780650020D867 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5F9C46002FA780650020D867 /* Localizable.xcstrings */; };
 		5F9C46022FA780650020D867 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5F9C46002FA780650020D867 /* Localizable.xcstrings */; };
+		5F9C46102FA7EC3F0020D867 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 5F9C460F2FA7EC3F0020D867 /* Products.storekit */; };
+		5F9C46112FA7EC3F0020D867 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 5F9C460F2FA7EC3F0020D867 /* Products.storekit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,7 @@
 		5F9C45DF2FA2A0920020D867 /* DaysToWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DaysToWidgetExtension.entitlements; sourceTree = "<group>"; };
 		5F9C45E12FA2A0FF0020D867 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		5F9C46002FA780650020D867 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		5F9C460F2FA7EC3F0020D867 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -61,7 +64,11 @@
 		5F9C45E82FA2A28C0020D867 /* Exceptions for "DaysTo" folder in "DaysToWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Constants/DTColor.swift,
+				Constants/DTIcon.swift,
+				StoreManager.swift,
 				Views/AddEventView.swift,
+				Views/PaywallView.swift,
 			);
 			target = 5F9C45C62FA1388C0020D867 /* DaysToWidgetExtension */;
 		};
@@ -109,6 +116,7 @@
 		5F9C45A92FA138450020D867 = {
 			isa = PBXGroup;
 			children = (
+				5F9C460F2FA7EC3F0020D867 /* Products.storekit */,
 				5F9C46002FA780650020D867 /* Localizable.xcstrings */,
 				5F9C45E02FA2A0EF0020D867 /* Model */,
 				5F9C45DF2FA2A0920020D867 /* DaysToWidgetExtension.entitlements */,
@@ -241,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F9C46012FA780650020D867 /* Localizable.xcstrings in Resources */,
+				5F9C46112FA7EC3F0020D867 /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F9C46022FA780650020D867 /* Localizable.xcstrings in Resources */,
+				5F9C46102FA7EC3F0020D867 /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

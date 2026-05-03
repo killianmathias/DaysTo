@@ -12,5 +12,6 @@ import WidgetKit
 struct DaysToWidgetBundle: WidgetBundle {
     var body: some Widget {
         DaysToWidget()
+        DaysToMinimalWidget()
     }
 }
