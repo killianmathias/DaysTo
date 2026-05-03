@@ -5,8 +5,8 @@
 //  Created by Killian Mathias on 29/04/2026.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import WidgetKit
 
 struct AddEventView: View {
@@ -25,10 +25,10 @@ struct AddEventView: View {
                 Section(String(localized: "Détails de l'échéance")) {
                     TextField(String(localized: "Titre (ex: Vacances au Japon)"), text: $title)
                     // On demande uniquement la date, pas l'heure
-                    DatePicker(String(localized:"Date"), selection: $date, displayedComponents: .date)
+                    DatePicker(String(localized: "Date"), selection: $date, displayedComponents: .date)
                 }
                 
-                Section(String(localized:"Icône")) {
+                Section(String(localized: "Icône")) {
                     Picker(String(localized: "Choisir une icône"), selection: $selectedIcon) {
                         ForEach(icons, id: \.self) { icon in
                             Image(systemName: icon).tag(icon)
@@ -40,10 +40,10 @@ struct AddEventView: View {
             .navigationTitle(String(localized: "Nouvel Évènement"))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized:"Annuler")) { dismiss() }
+                    Button(String(localized: "Annuler")) { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized:"Ajouter")) { saveEvent() }
+                    Button(String(localized: "Ajouter")) { saveEvent() }
                         .disabled(title.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
@@ -51,21 +51,22 @@ struct AddEventView: View {
     }
     
     private func saveEvent() {
-            let newEvent = Event(title: title, date: date, icon: selectedIcon)
+        let newEvent = Event(title: title, date: date, icon: selectedIcon)
 
-            modelContext.insert(newEvent)
+        modelContext.insert(newEvent)
  
-            do {
-                try modelContext.save()
-            } catch {
-                print("Erreur de sauvegarde : \(error)")
-            }
-            
-            WidgetCenter.shared.reloadAllTimelines()
-            
-            dismiss()
+        do {
+            try modelContext.save()
+        } catch {
+            print("Erreur de sauvegarde : \(error)")
         }
+            
+        WidgetCenter.shared.reloadAllTimelines()
+            
+        dismiss()
+    }
 }
+
 #Preview {
     AddEventView()
 }

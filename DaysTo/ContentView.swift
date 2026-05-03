@@ -4,8 +4,8 @@
 //
 //  Created by Killian Mathias on 28/04/2026.
 //
-import SwiftUI
 import SwiftData
+import SwiftUI
 import WidgetKit
 
 struct ContentView: View {
@@ -25,7 +25,7 @@ struct ContentView: View {
                                 .font(.title)
                                 .foregroundStyle(.blue)
                                 .frame(width: 40)
-                            
+
                             VStack(alignment: .leading) {
                                 Text(event.title)
                                     .font(.headline)
@@ -33,15 +33,15 @@ struct ContentView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
-                            
+
                             Spacer()
-                            
+
                             // Le compteur de jours
                             VStack {
                                 Text("\(event.daysRemaining)")
                                     .font(.title2.bold())
                                     .foregroundStyle(event.daysRemaining < 0 ? .red : .primary)
-                                Text(String(localized:"jours"))
+                                Text(String(localized: "jours"))
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -54,7 +54,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: { showingAddEvent = true }) {
-                        Label(String(localized:"Ajouter"), systemImage: "plus")
+                        Label(String(localized: "Ajouter"), systemImage: "plus")
                     }
                 }
             }
@@ -65,19 +65,19 @@ struct ContentView: View {
     }
 
     private func deleteItems(offsets: IndexSet) {
-            withAnimation {
-                for index in offsets {
-                    modelContext.delete(events[index])
-                }
-                do {
-                    try modelContext.save()
-                } catch {
-                    print("Error while deleting : \(error)")
-                }
-                
-                WidgetCenter.shared.reloadAllTimelines()
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(events[index])
             }
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error while deleting : \(error)")
+            }
+
+            WidgetCenter.shared.reloadAllTimelines()
         }
+    }
 }
 
 #Preview {

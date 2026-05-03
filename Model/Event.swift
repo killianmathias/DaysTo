@@ -14,14 +14,14 @@ final class Event {
     var date: Date
     var icon: String
     var creationDate: Date
-    
+
     init(title: String, date: Date, icon: String = "calendar") {
         self.title = title
         self.date = date
         self.icon = icon
         self.creationDate = Date()
     }
-    
+
     var daysRemaining: Int {
         let calendar = Calendar.current
         let start = calendar.startOfDay(for: Date())

@@ -5,31 +5,30 @@
 //  Created by Killian Mathias on 28/04/2026.
 //
 
-import WidgetKit
-import SwiftUI
 import SwiftData
+import SwiftUI
+import WidgetKit
 
 struct Provider: TimelineProvider {
-    
     private func fetchNextEvent() -> Event? {
         let groupID = "group.com.killianmathias.daysto"
-        
+
         guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID) else {
             return nil
         }
-        
+
         let fileURL = groupURL.appendingPathComponent("Events.sqlite")
-        
+
         guard let container = try? ModelContainer(
             for: Event.self,
             configurations: ModelConfiguration(url: fileURL)
         ) else { return nil }
-        
+
         let backgroundContext = ModelContext(container)
-        
+
         var descriptor = FetchDescriptor<Event>(sortBy: [SortDescriptor(\.date)])
         descriptor.fetchLimit = 1
-        
+
         let events = try? backgroundContext.fetch(descriptor)
         return events?.first
     }
@@ -46,10 +45,10 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let nextEvent = fetchNextEvent()
         let entry = SimpleEntry(date: Date(), event: nextEvent)
-        
+
         let midnight = Calendar.current.startOfDay(for: Date()).addingTimeInterval(86400)
         let timeline = Timeline(entries: [entry], policy: .after(midnight))
-        
+
         completion(timeline)
     }
 }
@@ -59,7 +58,7 @@ struct SimpleEntry: TimelineEntry {
     let event: Event?
 }
 
-struct DaysToWidgetEntryView : View {
+struct DaysToWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -72,11 +71,11 @@ struct DaysToWidgetEntryView : View {
                         .font(.headline)
                         .lineLimit(1)
                 }
-                
+
                 Text(String(localized: "\(event.daysRemaining) jours"))
                     .font(.system(.title, design: .rounded).bold())
                     .foregroundStyle(event.daysRemaining < 0 ? .red : .primary)
-                
+
                 Text(String(localized: "avant le grand jour"))
                     .font(.caption)
                     .foregroundStyle(.secondary)

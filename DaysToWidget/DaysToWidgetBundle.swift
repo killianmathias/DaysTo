@@ -5,8 +5,8 @@
 //  Created by Killian Mathias on 28/04/2026.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct DaysToWidgetBundle: WidgetBundle {
